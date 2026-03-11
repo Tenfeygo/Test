@@ -16,8 +16,10 @@
 
 body {
   margin: 0;
-  font-family: "Trebuchet MS", "Segoe UI", "Noto Sans SC", sans-serif;
-  background: radial-gradient(circle at top, #fff6ec, #efe2d7 55%, #e7d1bf 100%);
+  font-family: "Microsoft YaHei UI", "PingFang SC", "Noto Sans SC", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.8), rgba(239, 226, 215, 0.85) 55%, rgba(231, 209, 191, 0.95) 100%),
+    linear-gradient(120deg, #f7efe7 0%, #f3e7da 40%, #efe0d1 100%);
   color: var(--ink);
   min-height: 100vh;
 }
@@ -48,6 +50,7 @@ h1 {
   font-family: "Georgia", "Noto Serif SC", serif;
   font-size: clamp(32px, 5vw, 52px);
   margin: 0 0 12px;
+  line-height: 1.2;
 }
 
 .subtitle {
@@ -97,6 +100,7 @@ h1 {
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s ease, border-color 0.2s ease;
+  position: relative;
 }
 
 .dropzone:hover {
@@ -105,7 +109,10 @@ h1 {
 }
 
 .dropzone input {
-  display: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .dropzone-title {
@@ -214,44 +221,82 @@ h1 {
   transform: translateY(-1px);
 }
 
-.analysis-grid {
+.result-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
 }
 
-.metric {
+.result-item {
   background: white;
   border-radius: 16px;
-  padding: 16px;
+  padding: 16px 18px;
   border: 1px solid #f0e0d4;
   display: grid;
   gap: 8px;
   box-shadow: 0 10px 18px rgba(58, 36, 22, 0.08);
 }
 
-.metric-wide {
+.result-wide {
   grid-column: span 2;
 }
 
-.metric-label {
+.result-label {
   font-size: 12px;
   color: var(--ink-muted);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
 }
 
-.metric-value {
+.result-value {
   font-size: 18px;
   font-weight: 700;
 }
 
-.metric-text {
+.result-text {
   font-size: 14px;
   font-weight: 500;
   color: #3d2f25;
-  line-height: 1.5;
+  line-height: 1.6;
   white-space: pre-wrap;
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.report-card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid #f0e0d4;
+  display: grid;
+  gap: 10px;
+  box-shadow: 0 10px 18px rgba(58, 36, 22, 0.08);
+}
+
+.report-title {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+}
+
+.report-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #3d2f25;
+}
+
+.report-list {
+  margin: 0;
+  padding-left: 18px;
+  color: #3d2f25;
+  line-height: 1.6;
+  font-size: 14px;
 }
 
 .footer {
@@ -271,7 +316,7 @@ h1 {
     align-items: flex-start;
   }
 
-  .metric-wide {
+  .result-wide {
     grid-column: span 1;
   }
 }

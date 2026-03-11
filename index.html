@@ -3,35 +3,35 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>图像识别与数据分析</title>
+    <title>直播间数据分析助手</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="app">
       <header class="hero">
         <div>
-          <p class="eyebrow">Image Insight Lab</p>
-          <h1>图片识别与数据分析</h1>
+          <p class="eyebrow">Live Room Intelligence</p>
+          <h1>直播间数据分析助手</h1>
           <p class="subtitle">
-            上传图片，获得基础识别与视觉数据分析。支持亮度、对比度、主色调、边缘密度等指标。
+            上传直播数据截图或表格，AI 从专业直播分析视角解读你的表现，给出增长建议与风险提醒。
           </p>
         </div>
         <div class="hero-card">
           <div class="hero-card-title">快速开始</div>
           <ol class="steps">
-            <li>点击下方区域或拖拽图片</li>
+            <li>上传直播截图或数据表格</li>
             <li>系统自动识别并生成分析</li>
-            <li>下载分析报告（JSON）</li>
+            <li>下载完整分析 JSON</li>
           </ol>
         </div>
       </header>
 
       <section class="panel">
         <label class="dropzone" id="dropzone">
-          <input id="fileInput" type="file" accept="image/*" />
+          <input id="fileInput" type="file" accept="image/*,.csv,.xlsx,.xls" />
           <div class="dropzone-content">
-            <div class="dropzone-title">添加图片</div>
-            <div class="dropzone-subtitle">支持 PNG / JPG / WebP</div>
+            <div class="dropzone-title">添加直播数据</div>
+            <div class="dropzone-subtitle">支持 PNG / JPG / WebP / CSV / XLSX</div>
             <button class="ghost-btn" type="button" id="chooseBtn">选择文件</button>
           </div>
         </label>
@@ -40,7 +40,7 @@
           <div class="preview-title">预览</div>
           <div class="preview-body">
             <canvas id="canvas" width="640" height="360"></canvas>
-            <div class="preview-placeholder" id="placeholder">等待图片</div>
+            <div class="preview-placeholder" id="placeholder">等待上传</div>
           </div>
         </div>
       </section>
@@ -49,7 +49,7 @@
         <div class="analysis-header">
           <div>
             <div class="panel-title">识别结果</div>
-            <div class="panel-subtitle">基础视觉分析与简易分类</div>
+            <div class="panel-subtitle">上传完成后生成 AI 识别与 OCR</div>
           </div>
           <div class="analysis-actions">
             <button class="primary-btn" type="button" id="downloadBtn" disabled>
@@ -59,53 +59,73 @@
           </div>
         </div>
 
-        <div class="analysis-grid" id="metricsGrid">
-          <div class="metric">
-            <div class="metric-label">状态</div>
-            <div class="metric-value" id="statusValue">未上传</div>
+        <div class="result-strip">
+          <div class="result-item">
+            <div class="result-label">状态</div>
+            <div class="result-value" id="statusValue">未上传</div>
           </div>
-          <div class="metric">
-            <div class="metric-label">图像尺寸</div>
-            <div class="metric-value" id="sizeValue">-</div>
+          <div class="result-item">
+            <div class="result-label">数据类型</div>
+            <div class="result-value" id="typeValue">-</div>
           </div>
-          <div class="metric">
-            <div class="metric-label">宽高比</div>
-            <div class="metric-value" id="ratioValue">-</div>
+          <div class="result-item result-wide">
+            <div class="result-label">OCR 文字识别</div>
+            <div class="result-value result-text" id="ocrValue">-</div>
           </div>
-          <div class="metric">
-            <div class="metric-label">平均亮度</div>
-            <div class="metric-value" id="brightnessValue">-</div>
+        </div>
+      </section>
+
+      <section class="panel analysis">
+        <div class="analysis-header">
+          <div>
+            <div class="panel-title">直播间 AI 分析报告</div>
+            <div class="panel-subtitle">摘要、亮点、问题与优化建议</div>
           </div>
-          <div class="metric">
-            <div class="metric-label">对比度</div>
-            <div class="metric-value" id="contrastValue">-</div>
+        </div>
+
+        <div class="report-grid">
+          <div class="report-card">
+            <div class="report-title">总体摘要</div>
+            <div class="report-text" id="summaryValue">-</div>
           </div>
-          <div class="metric">
-            <div class="metric-label">主色调</div>
-            <div class="metric-value" id="dominantValue">-</div>
+          <div class="report-card">
+            <div class="report-title">亮点</div>
+            <ul class="report-list" id="highlightsList"></ul>
           </div>
-          <div class="metric">
-            <div class="metric-label">边缘密度</div>
-            <div class="metric-value" id="edgeValue">-</div>
+          <div class="report-card">
+            <div class="report-title">问题</div>
+            <ul class="report-list" id="issuesList"></ul>
           </div>
-          <div class="metric">
-            <div class="metric-label">简易分类</div>
-            <div class="metric-value" id="labelValue">-</div>
+          <div class="report-card">
+            <div class="report-title">建议</div>
+            <ul class="report-list" id="recommendationsList"></ul>
           </div>
-          <div class="metric metric-wide">
-            <div class="metric-label">AI 识别</div>
-            <div class="metric-value metric-text" id="aiValue">-</div>
+          <div class="report-card">
+            <div class="report-title">观众洞察</div>
+            <ul class="report-list" id="audienceList"></ul>
           </div>
-          <div class="metric metric-wide">
-            <div class="metric-label">OCR 文字识别</div>
-            <div class="metric-value metric-text" id="ocrValue">-</div>
+          <div class="report-card">
+            <div class="report-title">转化洞察</div>
+            <ul class="report-list" id="conversionList"></ul>
+          </div>
+          <div class="report-card">
+            <div class="report-title">内容洞察</div>
+            <ul class="report-list" id="contentList"></ul>
+          </div>
+          <div class="report-card">
+            <div class="report-title">风险与提醒</div>
+            <ul class="report-list" id="risksList"></ul>
+          </div>
+          <div class="report-card">
+            <div class="report-title">追问问题</div>
+            <ul class="report-list" id="questionsList"></ul>
           </div>
         </div>
       </section>
     </main>
 
     <footer class="footer">
-      <span>本地浏览器处理，无需上传服务器。</span>
+      <span>仅上传到本地服务用于分析，请避免包含敏感信息。</span>
     </footer>
 
     <script src="app.js"></script>
