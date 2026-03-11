@@ -1,0 +1,113 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>图像识别与数据分析</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Image Insight Lab</p>
+          <h1>图片识别与数据分析</h1>
+          <p class="subtitle">
+            上传图片，获得基础识别与视觉数据分析。支持亮度、对比度、主色调、边缘密度等指标。
+          </p>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-title">快速开始</div>
+          <ol class="steps">
+            <li>点击下方区域或拖拽图片</li>
+            <li>系统自动识别并生成分析</li>
+            <li>下载分析报告（JSON）</li>
+          </ol>
+        </div>
+      </header>
+
+      <section class="panel">
+        <label class="dropzone" id="dropzone">
+          <input id="fileInput" type="file" accept="image/*" />
+          <div class="dropzone-content">
+            <div class="dropzone-title">添加图片</div>
+            <div class="dropzone-subtitle">支持 PNG / JPG / WebP</div>
+            <button class="ghost-btn" type="button" id="chooseBtn">选择文件</button>
+          </div>
+        </label>
+
+        <div class="preview">
+          <div class="preview-title">预览</div>
+          <div class="preview-body">
+            <canvas id="canvas" width="640" height="360"></canvas>
+            <div class="preview-placeholder" id="placeholder">等待图片</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel analysis">
+        <div class="analysis-header">
+          <div>
+            <div class="panel-title">识别结果</div>
+            <div class="panel-subtitle">基础视觉分析与简易分类</div>
+          </div>
+          <div class="analysis-actions">
+            <button class="primary-btn" type="button" id="downloadBtn" disabled>
+              下载分析 JSON
+            </button>
+            <button class="ghost-btn" type="button" id="resetBtn" disabled>清空</button>
+          </div>
+        </div>
+
+        <div class="analysis-grid" id="metricsGrid">
+          <div class="metric">
+            <div class="metric-label">状态</div>
+            <div class="metric-value" id="statusValue">未上传</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">图像尺寸</div>
+            <div class="metric-value" id="sizeValue">-</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">宽高比</div>
+            <div class="metric-value" id="ratioValue">-</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">平均亮度</div>
+            <div class="metric-value" id="brightnessValue">-</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">对比度</div>
+            <div class="metric-value" id="contrastValue">-</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">主色调</div>
+            <div class="metric-value" id="dominantValue">-</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">边缘密度</div>
+            <div class="metric-value" id="edgeValue">-</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">简易分类</div>
+            <div class="metric-value" id="labelValue">-</div>
+          </div>
+          <div class="metric metric-wide">
+            <div class="metric-label">AI 识别</div>
+            <div class="metric-value metric-text" id="aiValue">-</div>
+          </div>
+          <div class="metric metric-wide">
+            <div class="metric-label">OCR 文字识别</div>
+            <div class="metric-value metric-text" id="ocrValue">-</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>本地浏览器处理，无需上传服务器。</span>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
