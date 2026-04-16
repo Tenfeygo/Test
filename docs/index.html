@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SD2全能助手 - 项目汇报</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            overflow: hidden; /* 防止页面整体滚动，使用幻灯片内部切换 */
+            background-color: #0f172a;
+        }
+        .slide {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: translateY(20px);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .slide.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            z-index: 10;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .data-bar {
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* 图片放大镜样式增强 */
+        .zoomable-img {
+            cursor: zoom-in;
+            transition: filter 0.3s ease;
+        }
+        .zoomable-img:hover {
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+<body class="text-slate-200 h-screen w-screen bg-gradient-to-br from-slate-900 via-slate-800 to-black">
+
+    <!-- 导航进度条 -->
+    <div class="fixed top-0 left-0 w-full h-1 bg-slate-800 z-50">
+        <div id="progress-bar" class="h-full bg-blue-500 transition-all duration-300 w-0"></div>
+    </div>
+
+    <!-- 幻灯片容器 -->
+    <div class="relative w-full h-full max-w-6xl mx-auto px-6" id="slides-container">
+        
+        <!-- Slide 1: 封面 -->
+        <div class="slide active" id="slide-0">
+            <div class="text-center w-full">
+                <div class="inline-flex items-center justify-center p-4 bg-blue-500/10 rounded-full mb-6">
+                    <i class="fa-solid fa-cube text-5xl text-blue-400"></i>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold mb-4 text-white tracking-tight">SD2全能助手</h1>
+                <h2 class="text-2xl md:text-3xl text-slate-400 font-light">Seedance Prompt Studio</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto my-6 rounded-full"></div>
+                <p class="text-xl md:text-2xl text-slate-300 font-medium max-w-3xl mx-auto leading-relaxed mb-10">
+                    打破 AI 视频创作壁垒，构建团队数字资产闭环
+                </p>
+                
+                <!-- 封面软件展示区 -->
+                <div class="relative max-w-4xl mx-auto group perspective-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent z-10 bottom-0 pointer-events-none"></div>
+                    <div class="absolute -inset-2 bg-gradient-to-b from-blue-500 to-purple-600 rounded-t-2xl blur-xl opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+                    <!-- 添加 onerror 以防本地图片无法加载时导致布局错乱 -->
+                    <img src="应用界面1.png" onerror="this.onerror=null; this.src='https://placehold.co/800x400/1e293b/cbd5e1?text=App+UI+1';" alt="SD2全能助手主界面" class="zoomable-img relative rounded-t-xl border-t border-l border-r border-slate-600 shadow-2xl object-cover object-top h-64 md:h-80 w-full transform group-hover:-translate-y-2 transition duration-500">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: 项目背景与痛点 -->
+        <div class="slide" id="slide-1">
+            <div class="w-full">
+                <h2 class="text-3xl md:text-4xl font-bold mb-2 text-white">项目定位与核心价值</h2>
+                <p class="text-slate-400 mb-10 text-lg">专为内容创作团队打造的桌面级 AI 工作台</p>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="glass-card rounded-2xl p-8">
+                        <h3 class="text-xl text-red-400 font-bold mb-6 flex items-center"><i class="fa-solid fa-triangle-exclamation mr-3"></i> 行业痛点</h3>
+                        <ul class="space-y-6">
+                            <li class="flex items-start">
+                                <div class="bg-red-500/20 p-2 rounded mr-4 mt-1"><i class="fa-solid fa-xmark text-red-400"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white text-lg">工作流程低效</h4>
+                                    <p class="text-slate-400">网页端频繁切换账号，需要重复上传提示词和参考素材。</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-red-500/20 p-2 rounded mr-4 mt-1"><i class="fa-solid fa-xmark text-red-400"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white text-lg">试错时间消耗高</h4>
+                                    <p class="text-slate-400">提示词怎么写全靠试，团队内部共享提示词花费时间多。</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-red-500/20 p-2 rounded mr-4 mt-1"><i class="fa-solid fa-xmark text-red-400"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white text-lg">团队合作效率低</h4>
+                                    <p class="text-slate-400">个人经验无法转化为团队共享的数字资产。</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="glass-card rounded-2xl p-8 border-t-4 border-t-blue-500">
+                        <h3 class="text-xl text-blue-400 font-bold mb-6 flex items-center"><i class="fa-solid fa-rocket mr-3"></i> 我们的解决方案</h3>
+                        <ul class="space-y-6">
+                            <li class="flex items-start">
+                                <div class="bg-blue-500/20 p-2 rounded mr-4 mt-1"><i class="fa-solid fa-check text-blue-400"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white text-lg">统一原生工作台</h4>
+                                    <p class="text-slate-400">无缝整合“生成-沉淀-复用-执行”全链路。</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-blue-500/20 p-2 rounded mr-4 mt-1"><i class="fa-solid fa-check text-blue-400"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white text-lg">AI 智能辅助</h4>
+                                    <p class="text-slate-400">大白话输入，AI复用有成果的提示词+优化。</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-blue-500/20 p-2 rounded mr-4 mt-1"><i class="fa-solid fa-check text-blue-400"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white text-lg">团队飞书库</h4>
+                                    <p class="text-slate-400">将每个组员摸索经验，转化为可迭代的资产。</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Prompt 生成 -->
+        <div class="slide" id="slide-2">
+            <div class="w-full">
+                <h2 class="text-3xl md:text-4xl font-bold mb-2 text-white">核心工作流 <span class="text-gradient">1. Prompt 智能生成与迭代</span></h2>
+                <p class="text-slate-400 mb-8 text-lg">解决“怎么写”与“难修改”的核心痛点</p>
+                
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <!-- 左侧：功能特点 -->
+                    <div class="w-full md:w-1/2 space-y-4">
+                        <div class="glass-card rounded-2xl p-5 hover:bg-white/5 transition flex items-center">
+                            <div class="h-12 w-12 shrink-0 bg-indigo-500/20 rounded-xl flex items-center justify-center mr-4">
+                                <i class="fa-solid fa-wand-magic-sparkles text-xl text-indigo-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-1">极简生成</h3>
+                                <p class="text-slate-400 text-sm">输入“视频类型 + 简易文案”即可一键生成已经有跑量数据结果的提示词，降低新人门槛。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-card rounded-2xl p-5 hover:bg-white/5 transition flex items-center border-l-4 border-blue-500 relative overflow-hidden">
+                            <div class="h-12 w-12 shrink-0 bg-blue-500/20 rounded-xl flex items-center justify-center mr-4 relative z-10">
+                                <i class="fa-regular fa-comments text-xl text-blue-400"></i>
+                            </div>
+                            <div class="relative z-10">
+                                <h3 class="text-lg font-bold text-white mb-1">对话式改写</h3>
+                                <p class="text-slate-400 text-sm">输入修改要求，AI 直接定向改写不满意部分，像聊天一样优化细节。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-card rounded-2xl p-5 hover:bg-white/5 transition flex items-center">
+                            <div class="h-12 w-12 shrink-0 bg-emerald-500/20 rounded-xl flex items-center justify-center mr-4">
+                                <i class="fa-solid fa-clock-rotate-left text-xl text-emerald-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-1">避免越改越错</h3>
+                                <p class="text-slate-400 text-sm">自动保留 v1/v2/v3 历史版本，支持一键“后悔”回退到最满意的版本。</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧：实机截图演示 -->
+                    <div class="w-full md:w-1/2 relative group bg-slate-800 rounded-2xl">
+                        <div class="absolute -inset-1 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                        <img src="应用界面3.png" onerror="this.onerror=null; this.src='https://placehold.co/800x600/1e293b/cbd5e1?text=App+UI+3';" alt="Prompt对话改写与生成界面" class="zoomable-img relative rounded-2xl border border-slate-600 shadow-2xl w-full object-cover object-left-top h-[320px] md:h-[380px]">
+                        
+                        <!-- 动态悬浮提示框 -->
+                        <div class="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur-sm border border-blue-500/30 p-3 rounded-xl flex items-center shadow-lg pointer-events-none">
+                            <div class="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse shrink-0"></div>
+                            <code class="text-xs text-slate-300 font-mono line-clamp-2">"保持上一个版本的分镜，但是把主角换成长发..." -> AI 定向重构中</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: 即梦集成 -->
+        <div class="slide" id="slide-3">
+            <div class="w-full">
+                <h2 class="text-3xl md:text-4xl font-bold mb-2 text-white">核心工作流 <span class="text-gradient">2. 即梦 (Dreamina) 深度集成</span></h2>
+                <p class="text-slate-400 mb-8 text-lg">解决“来回切换”与“难监控”的问题</p>
+                
+                <div class="flex flex-col md:flex-row gap-10 items-center">
+                    <div class="flex-1 space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center mr-4 shrink-0 mt-1">
+                                <i class="fa-solid fa-layer-group text-blue-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">统一多模态入口</h3>
+                                <p class="text-slate-400 text-sm">原生支持文生图、文生视频、多模态视频，一站式发起生成请求。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center mr-4 shrink-0 mt-1">
+                                <i class="fa-solid fa-crosshairs text-purple-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">精准引用 (@素材)</h3>
+                                <p class="text-slate-400 text-sm">支持拖拽音视频参考素材，并使用 <code>@图片1</code> 语法进行精准引用，确保角色/画面一致性。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center mr-4 shrink-0 mt-1">
+                                <i class="fa-solid fa-list-check text-emerald-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">任务监控与同步</h3>
+                                <p class="text-slate-400 text-sm">可视化的任务列表与状态筛选，后台自动查询云端渲染结果。</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧：即梦工作台实机图 -->
+                    <div class="flex-1 w-full relative group bg-slate-800 rounded-2xl">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                        <img src="应用界面4.png" onerror="this.onerror=null; this.src='https://placehold.co/800x600/1e293b/cbd5e1?text=App+UI+4';" alt="即梦原生工作台界面" class="zoomable-img relative rounded-2xl border border-slate-600 shadow-2xl w-full object-cover object-left-top h-[300px] md:h-[400px]">
+                        
+                        <!-- 视觉标签 -->
+                        <div class="absolute top-4 right-4 bg-teal-500/90 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg backdrop-blur flex items-center border border-teal-400 pointer-events-none">
+                            <i class="fa-solid fa-circle-check mr-2"></i> 即梦 API 级打通
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: 资产闭环 -->
+        <div class="slide" id="slide-4">
+            <div class="w-full text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-2 text-white">核心工作流 <span class="text-gradient">3. 资产沉淀与反馈闭环</span></h2>
+                <p class="text-slate-400 mb-8 text-lg">从“一次性使用”到“永久性资产”</p>
+                
+                <div class="flex flex-col items-center">
+                    <div class="flex flex-wrap justify-center items-center gap-2 md:gap-4 mb-8 text-lg md:text-xl font-bold text-slate-300">
+                        <div class="bg-slate-800 px-4 py-2 rounded-xl border border-slate-700">生成</div>
+                        <i class="fa-solid fa-arrow-right text-blue-500"></i>
+                        <div class="bg-slate-800 px-4 py-2 rounded-xl border border-slate-700 text-yellow-400">评分打标</div>
+                        <i class="fa-solid fa-arrow-right text-blue-500"></i>
+                        <div class="bg-slate-800 px-4 py-2 rounded-xl border border-slate-700 text-emerald-400">入库共享</div>
+                        <i class="fa-solid fa-arrow-right text-blue-500"></i>
+                        <div class="bg-blue-500 text-white px-4 py-2 rounded-xl shadow-lg shadow-blue-500/20">复用优化</div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 w-full max-w-5xl text-left items-center">
+                        <!-- 评分与规避逻辑 -->
+                        <div class="space-y-6">
+                            <div class="glass-card p-6 rounded-2xl border-l-4 border-l-yellow-400 hover:bg-white/5 transition">
+                                <h3 class="text-xl font-bold text-white mb-3"><i class="fa-solid fa-star text-yellow-400 mr-2"></i> 质量评估与高分留存</h3>
+                                <p class="text-slate-400 mb-4 text-sm">生成后直接进行 1-5分 评级，并补充场景标签与备注说明。高分样本自动存入云端库，支持按类型加权检索。</p>
+                                <div class="flex gap-2">
+                                    <span class="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded">5分绝佳</span>
+                                    <span class="bg-slate-700 text-slate-300 text-xs px-2 py-1 rounded">#优秀构图</span>
+                                </div>
+                            </div>
+
+                            <div class="glass-card p-6 rounded-2xl border-l-4 border-l-red-500 hover:bg-white/5 transition">
+                                <h3 class="text-xl font-bold text-white mb-3"><i class="fa-solid fa-ban text-red-400 mr-2"></i> 智能避坑机制</h3>
+                                <p class="text-slate-400 mb-2 text-sm">支持勾选“标记为低分规避样本”，系统在后续生成时会自动分析并剔除劣质词汇/经验。</p>
+                            </div>
+                        </div>
+
+                        <!-- 样本库截图 -->
+                        <div class="relative group bg-slate-800 rounded-2xl">
+                            <div class="absolute -inset-1 bg-gradient-to-b from-yellow-500/50 to-blue-500/50 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+                            <img src="应用界面5.png" onerror="this.onerror=null; this.src='https://placehold.co/800x500/1e293b/cbd5e1?text=App+UI+5';" alt="团队样本库沉淀" class="zoomable-img relative rounded-2xl border border-slate-600 shadow-2xl w-full object-cover object-top h-[250px] md:h-[320px]">
+                            
+                            <!-- 遮罩小标签 -->
+                            <div class="absolute -bottom-4 -right-4 bg-slate-800 border border-slate-600 text-white p-3 rounded-xl shadow-2xl flex items-center gap-3 pointer-events-none">
+                                <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                    <i class="fa-solid fa-database text-blue-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-400">本地团队资产库</div>
+                                    <div class="text-sm font-bold text-white">可视化检索</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: 飞书集成 -->
+        <div class="slide" id="slide-5">
+            <div class="w-full">
+                <h2 class="text-3xl md:text-4xl font-bold mb-2 text-white">核心工作流 <span class="text-gradient">4. 飞书多维表云端同步</span></h2>
+                <p class="text-slate-400 mb-10 text-lg">打通团队协作的“最后一公里”</p>
+                
+                <div class="flex flex-col md:flex-row gap-10 items-center justify-center">
+                    
+                    <!-- App 客户端设置截图 -->
+                    <div class="glass-card p-6 rounded-2xl text-center w-72 relative transform hover:-translate-y-2 transition duration-300">
+                        <img src="应用界面2.png" onerror="this.onerror=null; this.src='https://placehold.co/400x300/1e293b/cbd5e1?text=App+UI+2';" alt="配置与映射界面" class="zoomable-img w-full h-32 object-cover object-top rounded-xl border border-slate-600 mb-5 shadow-inner opacity-90 hover:opacity-100 transition bg-slate-800">
+                        <h3 class="font-bold text-white text-xl">SD2 本地客户端</h3>
+                        <p class="text-sm text-slate-400 mt-2">双表双 Token 独立配置<br>字段映射与一键测试</p>
+                        
+                        <!-- 动画连接线 -->
+                        <div class="absolute top-1/2 -right-10 w-10 h-0.5 bg-emerald-500/50 hidden md:block">
+                            <div class="w-3 h-3 bg-emerald-400 rounded-full absolute -top-1 right-0 animate-ping"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 同步逻辑 -->
+                    <div class="flex flex-col items-center gap-4 py-8">
+                        <div class="flex items-center text-slate-300 text-sm font-bold bg-slate-800 px-4 py-2 rounded-full border border-slate-700 shadow-lg">
+                            <i class="fa-solid fa-bolt text-yellow-400 mr-2"></i> 字段自动映射
+                        </div>
+                        <div class="flex items-center text-slate-300 text-sm font-bold bg-slate-800 px-4 py-2 rounded-full border border-slate-700 shadow-lg">
+                            <i class="fa-solid fa-cloud-arrow-up text-emerald-400 mr-2"></i> 实时双向同步
+                        </div>
+                    </div>
+
+                    <!-- 飞书端 -->
+                    <div class="glass-card p-8 rounded-2xl text-center w-72 border-t-4 border-t-emerald-500 relative transform hover:-translate-y-2 transition duration-300 bg-emerald-900/10">
+                        <div class="h-16 w-16 mx-auto bg-emerald-500 text-white rounded-2xl flex items-center justify-center text-3xl font-bold mb-6 shadow-lg shadow-emerald-500/30">
+                            飞
+                        </div>
+                        <h3 class="font-bold text-white text-xl">多维表格 (Bitable)</h3>
+                        <p class="text-sm text-slate-400 mt-2">云端图文视频素材库<br>团队全员多端共享</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 业务实战 (1) -->
+        <div class="slide" id="slide-6">
+            <div class="w-full">
+                <h2 class="text-3xl md:text-4xl font-bold mb-2 text-white">业务实战数据 <span class="text-blue-400">(1)</span></h2>
+                <p class="text-slate-400 mb-10 text-lg">场景：腾讯渠道剧情类素材（普拉提信息流投放）</p>
+                
+                <div class="glass-card rounded-2xl overflow-hidden">
+                    <div class="grid grid-cols-12 bg-slate-800 text-slate-300 font-bold p-4 border-b border-slate-700 text-sm md:text-base">
+                        <div class="col-span-6 md:col-span-6">素材内容 & 首帧截图</div>
+                        <div class="col-span-3 md:col-span-2">实测 CTR</div>
+                        <div class="col-span-2 hidden md:block">大盘均值</div>
+                        <div class="col-span-3 md:col-span-2">表现评价</div>
+                    </div>
+                    
+                    <!-- Row 1 -->
+                    <div class="grid grid-cols-12 p-4 border-b border-slate-700/50 items-center hover:bg-white/5 transition">
+                        <div class="col-span-6 md:col-span-6 flex items-center gap-4">
+                            <!-- 已将后缀由 jpg 改为 png -->
+                            <img src="屏幕截图 2026-04-08 143612.png" onerror="this.onerror=null; this.src='https://placehold.co/400x300/1e293b/cbd5e1?text=Frame+A';" alt="素材A首帧" class="zoomable-img h-16 md:h-24 w-24 md:w-32 rounded-lg border border-slate-600 shadow-lg object-cover shrink-0 bg-slate-800">
+                            <div>
+                                <div class="font-medium text-white text-sm md:text-lg line-clamp-1">普拉提混剪 A</div>
+                                <div class="text-xs text-slate-400 mt-1 bg-slate-800 px-2 py-1 rounded hidden sm:inline-block border border-slate-700">💬 魏巍老师教的好呀</div>
+                            </div>
+                        </div>
+                        <div class="col-span-3 md:col-span-2">
+                            <span class="text-xl md:text-2xl font-bold text-emerald-400 mr-2">2.71%</span>
+                            <div class="w-16 bg-slate-700 h-2 rounded-full mt-2 overflow-hidden hidden lg:block">
+                                <div class="bg-emerald-500 h-full w-[80%]"></div>
+                            </div>
+                        </div>
+                        <div class="col-span-2 text-slate-400 hidden md:flex items-center">
+                            1.79%
+                        </div>
+                        <div class="col-span-3 md:col-span-2 text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded inline-block w-max h-max text-sm">
+                            <i class="fa-solid fa-arrow-trend-up mr-1"></i> <span class="hidden sm:inline">超出</span> 51%
+                        </div>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="grid grid-cols-12 p-4 items-center hover:bg-white/5 transition">
+                        <div class="col-span-6 md:col-span-6 flex items-center gap-4">
+                            <!-- 已将后缀由 jpg 改为 png -->
+                            <img src="屏幕截图 2026-04-08 143647.png" onerror="this.onerror=null; this.src='https://placehold.co/400x300/1e293b/cbd5e1?text=Frame+B';" alt="素材B首帧" class="zoomable-img h-16 md:h-24 w-24 md:w-32 rounded-lg border border-slate-600 shadow-lg object-cover shrink-0 bg-slate-800">
+                            <div>
+                                <div class="font-medium text-white text-sm md:text-lg line-clamp-1">普拉提混剪 B</div>
+                                <div class="text-xs text-slate-400 mt-1 bg-slate-800 px-2 py-1 rounded hidden sm:inline-block border border-slate-700">💬 普拉提是年龄往后退</div>
+                            </div>
+                        </div>
+                        <div class="col-span-3 md:col-span-2">
+                            <span class="text-xl md:text-2xl font-bold text-emerald-400 mr-2">2.17%</span>
+                            <div class="w-16 bg-slate-700 h-2 rounded-full mt-2 overflow-hidden hidden lg:block">
+                                <div class="bg-emerald-500 h-full w-[65%]"></div>
+                            </div>
+                        </div>
+                        <div class="col-span-2 text-slate-400 hidden md:flex items-center">
+                            1.77%
+                        </div>
+                        <div class="col-span-3 md:col-span-2 text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded inline-block w-max h-max text-sm">
+                            <i class="fa-solid fa-arrow-trend-up mr-1"></i> <span class="hidden sm:inline">超出</span> 22%
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="text-slate-500 text-sm mt-6 text-center"><i class="fa-solid fa-circle-info mr-1"></i> 数据证明：通过规范化的高质量 Prompt 沉淀，AI 生成视频的点击率显著优于传统大盘水平。</p>
+            </div>
+        </div>
+
+        <!-- Slide 8: 业务实战 (2) -->
+        <div class="slide" id="slide-7">
+            <div class="w-full">
+                <h2 class="text-3xl md:text-4xl font-bold mb-2 text-white">业务实战数据 <span class="text-purple-400">(2)</span></h2>
+                <p class="text-slate-400 mb-8 text-lg">场景：巨量引擎渠道（IP老师带练学员）</p>
+                
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <!-- 左侧：素材首帧 -->
+                    <div class="w-full md:w-1/3 flex justify-center">
+                        <div class="glass-card p-3 rounded-2xl relative shadow-2xl shadow-blue-500/10 transform hover:scale-105 transition duration-300 w-full max-w-[260px]">
+                            <!-- 已将后缀由 jpg 改为 png -->
+                            <img src="屏幕截图 2026-04-08 143533.png" onerror="this.onerror=null; this.src='https://placehold.co/400x600/1e293b/cbd5e1?text=Viral+Frame';" alt="巨量引擎爆款素材" class="zoomable-img w-full aspect-[3/4] rounded-xl object-cover border border-slate-700 bg-slate-800">
+                            <div class="absolute -bottom-3 -right-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-bold px-4 py-2 rounded-lg shadow-lg pointer-events-none">
+                                🔥 爆量素材首帧
+                            </div>
+                            <div class="absolute top-4 -left-4 bg-slate-800 text-blue-400 text-xs font-mono px-3 py-1.5 rounded border border-slate-700 shadow hidden sm:block pointer-events-none">
+                                所有女生都要练背
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：数据卡片 -->
+                    <div class="w-full md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="glass-card rounded-2xl p-6 text-center relative overflow-hidden group sm:col-span-2 md:col-span-1 border-t-2 border-t-blue-500">
+                            <div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
+                            <i class="fa-solid fa-fire-flame-curved text-4xl text-blue-500/20 absolute -bottom-4 -right-4 group-hover:scale-150 transition duration-500"></i>
+                            <p class="text-slate-400 text-sm font-bold uppercase tracking-wider mb-2">单条最高消耗</p>
+                            <div class="flex justify-center items-baseline gap-1">
+                                <span class="text-5xl font-black text-white">20.1</span>
+                                <span class="text-xl text-blue-400 font-bold">万</span>
+                            </div>
+                        </div>
+
+                        <div class="glass-card rounded-2xl p-6 text-center relative overflow-hidden group border-t-2 border-t-purple-500">
+                            <div class="absolute top-0 left-0 w-full h-1 bg-purple-500"></div>
+                            <i class="fa-solid fa-users text-4xl text-purple-500/20 absolute -bottom-4 -right-4 group-hover:scale-150 transition duration-500"></i>
+                            <p class="text-slate-400 text-sm font-bold uppercase tracking-wider mb-2">单条线索贡献</p>
+                            <div class="flex justify-center items-baseline gap-1">
+                                <span class="text-5xl font-black text-white">1,185</span>
+                                <span class="text-xl text-purple-400 font-bold">个</span>
+                            </div>
+                        </div>
+
+                        <div class="glass-card rounded-2xl p-6 text-center relative overflow-hidden group sm:col-span-2 border-t-2 border-t-emerald-500">
+                            <div class="absolute top-0 left-0 w-full h-1 bg-emerald-500"></div>
+                            <i class="fa-solid fa-chart-line text-4xl text-emerald-500/20 absolute -bottom-4 -right-4 group-hover:scale-150 transition duration-500"></i>
+                            <div class="flex flex-col sm:flex-row items-center justify-between px-2">
+                                <div class="text-left mb-4 sm:mb-0">
+                                    <p class="text-slate-400 text-sm font-bold uppercase tracking-wider mb-1">实际 ROI 表现</p>
+                                    <div class="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded inline-block text-xs mt-1">
+                                        核心指标达成
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-end">
+                                    <div class="flex items-baseline gap-2">
+                                        <span class="text-6xl font-black text-emerald-400">0.64</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-slate-400 mt-1">
+                                        <span>大盘均值 0.54</span>
+                                        <i class="fa-solid fa-arrow-up ml-2 text-emerald-500"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: 技术底座 -->
+        <div class="slide" id="slide-8">
+            <div class="w-full">
+                <h2 class="text-3xl md:text-4xl font-bold mb-2 text-white">坚实的技术底座与安全性</h2>
+                <p class="text-slate-400 mb-10 text-lg">兼顾本地性能与云端协同的现代化架构</p>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="glass-card p-8 rounded-2xl border-l-4 border-l-orange-500 hover:-translate-y-1 transition duration-300">
+                        <div class="text-4xl text-orange-400 mb-6"><i class="fa-solid fa-microchip"></i></div>
+                        <h3 class="font-bold text-xl text-white mb-3">技术架构</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                            采用 <strong>Tauri v2 + Vanilla TS + Rust</strong> 构建。相比 Electron 具有更小体积和更高性能，支持 Windows 本地原生安装与调用。
+                        </p>
+                        <div class="flex gap-2">
+                            <span class="bg-slate-800 text-xs px-2 py-1 rounded border border-slate-700 text-slate-300">#Tauri</span>
+                            <span class="bg-slate-800 text-xs px-2 py-1 rounded border border-slate-700 text-slate-300">#Rust</span>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card p-8 rounded-2xl border-l-4 border-l-blue-500 hover:-translate-y-1 transition duration-300">
+                        <div class="text-4xl text-blue-400 mb-6"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h3 class="font-bold text-xl text-white mb-3">双重数据保险</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            不仅有飞书 API 接口进行多端同步，本地更具备持久化的 <strong>JSON 自动读写备份</strong>机制。断网依然可用，确保数字资产永不丢失。
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-8 rounded-2xl border-l-4 border-l-purple-500 hover:-translate-y-1 transition duration-300">
+                        <div class="text-4xl text-purple-400 mb-6"><i class="fa-solid fa-sliders"></i></div>
+                        <h3 class="font-bold text-xl text-white mb-3">一站式傻瓜配置</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            集成了 MiniMax 大模型密钥配置、飞书连通性一键测试，以及<strong>即梦浏览器环境登录检查</strong>，降低团队新人的软件上手门槛。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <!-- 图片放大预览层 (Lightbox Modal) -->
+    <div id="image-modal" class="fixed inset-0 z-[100] hidden bg-slate-900/95 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out transition-opacity duration-300 opacity-0">
+        <button id="close-modal" class="absolute top-6 right-6 text-white/50 hover:text-white transition text-4xl focus:outline-none z-[110]">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <img id="modal-image" src="" alt="放大预览图" class="max-w-full max-h-[90vh] rounded-xl shadow-2xl border border-slate-700 object-contain">
+    </div>
+
+    <!-- 控制按钮 -->
+    <div class="fixed bottom-8 right-8 flex gap-4 z-50">
+        <button id="prev-btn" class="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 text-white transition disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center focus:outline-none">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button id="next-btn" class="w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-500/30 text-white transition disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center focus:outline-none">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- 页码指示器 -->
+    <div class="fixed bottom-8 left-8 text-slate-400 font-mono z-50 bg-slate-900/50 px-3 py-1 rounded-full border border-slate-700 backdrop-blur-md">
+        <span id="current-page" class="text-white font-bold">1</span> / <span id="total-pages">10</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            let currentIndex = 0;
+
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const currentPageEl = document.getElementById('current-page');
+            const totalPagesEl = document.getElementById('total-pages');
+            const progressBar = document.getElementById('progress-bar');
+            
+            // Lightbox Modal 相关元素
+            const imageModal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            const closeModalBtn = document.getElementById('close-modal');
+            const zoomableImages = document.querySelectorAll('.zoomable-img');
+
+            totalPagesEl.textContent = totalSlides;
+
+            function updateUI() {
+                // Update slides visibility
+                slides.forEach((slide, index) => {
+                    if (index === currentIndex) {
+                        slide.classList.add('active');
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                });
+
+                // Update buttons
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === totalSlides - 1;
+
+                // 准确更新页码
+                currentPageEl.textContent = currentIndex + 1;
+                
+                const progress = ((currentIndex + 1) / totalSlides) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+
+            function goToNext() {
+                if (currentIndex < totalSlides - 1) {
+                    currentIndex++;
+                    updateUI();
+                }
+            }
+
+            function goToPrev() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateUI();
+                }
+            }
+
+            // === 事件监听：点击按钮翻页 ===
+            nextBtn.addEventListener('click', goToNext);
+            prevBtn.addEventListener('click', goToPrev);
+
+            // === 事件监听：键盘翻页 ===
+            document.addEventListener('keydown', (e) => {
+                // 如果图片放大镜开着，按 ESC 可以关闭
+                if (!imageModal.classList.contains('hidden') && e.key === 'Escape') {
+                    hideModal();
+                    return;
+                }
+                
+                if (e.key === 'ArrowRight' || e.key === 'Space' || e.key === 'Enter') {
+                    goToNext();
+                } else if (e.key === 'ArrowLeft') {
+                    goToPrev();
+                }
+            });
+
+            // === 新增功能 1：鼠标滚轮翻页 (防抖控制) ===
+            let isWheelLocked = false;
+            let wheelTimeout;
+
+            document.addEventListener('wheel', (e) => {
+                // 如果图片预览层打开着，不响应滚轮翻页
+                if (!imageModal.classList.contains('hidden')) return;
+                // 如果处于锁定防抖期，不响应
+                if (isWheelLocked) return;
+
+                // 设定一定的滚动阈值，防止高精度触控板轻微触碰就翻页
+                if (e.deltaY > 20) {
+                    goToNext();
+                    lockWheel();
+                } else if (e.deltaY < -20) {
+                    goToPrev();
+                    lockWheel();
+                }
+            }, { passive: true });
+
+            function lockWheel() {
+                isWheelLocked = true;
+                clearTimeout(wheelTimeout);
+                // 锁定 800ms，这个时间刚好足够过渡动画播完并让用户反应过来
+                wheelTimeout = setTimeout(() => {
+                    isWheelLocked = false;
+                }, 800);
+            }
+
+            // === 新增功能 2：图片点击放大预览 (Lightbox) ===
+            zoomableImages.forEach(img => {
+                img.addEventListener('click', (e) => {
+                    e.stopPropagation(); // 阻止事件冒泡
+                    modalImage.src = img.src; // 将预览框的图源替换为被点击的图源
+                    imageModal.classList.remove('hidden');
+                    // 强制重绘以触发 Tailwind 的 opacity transition
+                    void imageModal.offsetWidth;
+                    imageModal.classList.remove('opacity-0');
+                });
+            });
+
+            const hideModal = () => {
+                imageModal.classList.add('opacity-0');
+                // 等待淡出动画结束再真正隐藏 DOM
+                setTimeout(() => {
+                    imageModal.classList.add('hidden');
+                    modalImage.src = '';
+                }, 300);
+            };
+
+            imageModal.addEventListener('click', hideModal);
+            closeModalBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                hideModal();
+            });
+            // 阻止点击图片自身时关闭弹窗
+            modalImage.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+
+            // Initialize 第一页
+            updateUI();
+        });
+    </script>
+</body>
+</html>
